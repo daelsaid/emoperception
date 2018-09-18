@@ -5,7 +5,7 @@ import re
 import matplotlib as plt
 %matplotlib
 
-#sset paths 
+#sset paths
 behav_path=('/Users/lillyel-said/Desktop/stanford/scripts/jupyter_notebooks/anger_good')
 curr_dir = os.getcwd()
 outputpath=os.path.join(behav_path,'output')
@@ -126,7 +126,7 @@ def extract_emoperception_conditions(behav_data_path,file,output_txt_path):
 	#     print [index_with_cor[x][0],index_with_cor[x][1]==actual[x]]
 	#     response_corr.append([index_with_cor[x][0],index_with_cor[x][1]==actual[x]])
 
-
+extract_emoperception_conditions('/Users/lillyel-said/Desktop/stanford/scripts/jupyter_notebooks/emopercept/anger_good/logs','17138_ambiguousfaces_anger_7-15-2017_2017_sep_03_1219.log',)
 
 #run on all behav log files
 for f in current_dir:
