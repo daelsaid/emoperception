@@ -1,10 +1,17 @@
 #/bin/bash
 
+#path definition
+
+main_path=/home/daelsaid/Desktop/data/emo
+testrun=/media/daelsaid/drive_a_backup/data/test_dir_sub_01
+initial_raw_dir=/Volumes/daelsaid/data/emoperception_processing/
+
 
 #ORG
 
+
 #finding all raw emo data niftis  anad copy to dir for backup before renaming
-for x in `find ./ -maxdepth 4 -name '*nii.gz' -type f | grep -v T1 | grep Emo`; do cp $x /Volumes/daelsaid/data/emoperception_processing/test1; done
+for x in `find ./ -maxdepth 4 -name '*nii.gz' -type f | grep -v T1 | grep Emo`; do cp $x ${initial_raw_dir}/test1; done
 
 
 #find emo data niftis and rename
@@ -12,9 +19,7 @@ for x in `find ./ -maxdepth 4 -name '*nii.gz' -type f | grep -v T1 | grep Emo_Ru
 
 
 #making directory with exam and date
-for x in `find ./ -maxdepth 4 -name '*nii.gz' -type f | grep T1`; do dir=`echo $x | cut -d/ -f3` ; exam=`echo $x | cut -d/ -f5 | cut -d_ -f1`; echo $exam"_"$dir; mkdir /Volumes/daelsaid/data/emoperception_processing/all/`echo $exam"_"$dir`;done
-
-
+for x in `find ./ -maxdepth 4 -name '*nii.gz' -type f | grep T1`; do dir=`echo $x | cut -d/ -f3` ; exam=`echo $x | cut -d/ -f5 | cut -d_ -f1`; echo $exam"_"$dir; mkdir ${initial_raw_dir}/all/`echo $exam"_"$dir`;done
 
 #finding all json files with run type, exam number, date, and time of scan
 for x in `find . -name '*15*json' -type f`; do echo $(basename $x) `cat $x | grep exam_number` `cat $x | grep series_description` `cat $x | grep study_date` `cat $x | grep study_time` ;done | grep -v qa | sort -u
@@ -29,34 +34,30 @@ for x in `ls *.log`; do echo "subject" `echo $x | cut -d_ -f1` `echo $x | cut -d
 #converting behav text files to bids - accepted events tsv files
  for x in `ls -d *`; do cd $x; prefix=`echo *Happy*.txt | cut -d. -f1`; echo $prefix; tr " " "\\t" < ${prefix}.txt > ${prefix}.tsv; cd /Volumes/wd_daelsaid/emo/all_subj/all_subj;done
 
-
-
 #for anger
-for x in `ls -d sub*`; do cd $x/func; run_anger=`ls *anger*nii.gz | cut -d_ -f3-4 | cut -d. -f1`; rename "s/-events_bold/${run_anger}/g" *-events_bold.tsv; cd /home/daelsaid/Desktop/data/emo; done
-
-
+for x in `ls -d sub*`; do cd $x/func; run_anger=`ls *anger*nii.gz | cut -d_ -f3-4 | cut -d. -f1`; rename "s/-events_bold/${run_anger}/g" *-events_bold.tsv; cd ${main_path}; done
 
 #for happy
 for x in `ls -d sub*`; do cd $x/func; run_happy=`ls *happy*nii.gz | cut -d_ -f3-4 | cut -d. -f1`; echo $run_happy; rename "s/emo_${run_happy}/emohappy_${run_happy}/g" *emo_${run_happy}*json; cd ~/Desktop/data/emo;done
 
 #bids validator
-docker run -ti --rm -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01/:/data:ro bids/validator /data
+docker run -ti --rm -v=${testrun}/:/data:ro bids/validator /data
 
 #FMRIPREP
 #single subj
 
-sudo docker run --rm -it -v=/home/daelsaid/Desktop/data/emo:/data -v=/usr/local/freesurfer:/opt/freesurfer -v=/home/daelsaid/Desktop/data/emo/out_rerun_with_fs:/out poldracklab/fmriprep /data /out participant --participant_label 001 --fs-license-file=/opt/freesurfer
+sudo docker run --rm -it -v=${main_path}:/data -v=/usr/local/freesurfer:/opt/freesurfer -v=${main_path}/out_rerun_with_fs:/out poldracklab/fmriprep /data /out participant --participant_label 001 --fs-license-file=/opt/freesurfer
 
 #running subjects from text file
-for x in `cat test.txt`; do docker run --rm -it -v=/home/daelsaid/Desktop/data/emo:/data -v=/usr/local/freesurfer:/opt/freesurfer -v=/home/daelsaid/Desktop/data/emo/out_rerun_with_fs:/out poldracklab/fmriprep /data /out participant --participant_label $x --fs-license-file=/opt/freesurfer; done
+for x in `cat test.txt`; do docker run --rm -it -v=${main_path}:/data -v=/usr/local/freesurfer:/opt/freesurfer -v=${main_path}/out_rerun_with_fs:/out poldracklab/fmriprep /data /out participant --participant_label $x --fs-license-file=/opt/freesurfer; done
 
 #FITLINS
 
 #running fitlins on preprocessed subject files for happy and angry
 
-for subj in `ls -d sub*`; do docker run --rm -it -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01:/data -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01/derivatives:/preproc -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01/results/anger:/outdir poldracklab/fitlins /data /outdir session --participant-label `echo $subj | cut -d'-' -f2` -m anger_model.json;done
+for subj in `ls -d sub*`; do docker run --rm -it -v=${testrun}:/data -v=${testrun}/derivatives:/preproc -v=${testrun}/results/anger:/outdir poldracklab/fitlins /data /outdir session --participant-label `echo $subj | cut -d'-' -f2` -m anger_model.json;done
 
-for subj in `ls -d sub*`; do docker run --rm -it -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01:/data -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01/derivatives:/preproc -v=/media/daelsaid/drive_a_backup/data/test_dir_sub_01/results/happy:/outdir poldracklab/fitlins /data /outdir session --participant-label `echo $subj | cut -d'-' -f2` -m happy_model.json;done
+for subj in `ls -d sub*`; do docker run --rm -it -v=${testrun}:/data -v=${testrun}/derivatives:/preproc -v=${testrun}/results/happy:/outdir poldracklab/fitlins /data /outdir session --participant-label `echo $subj | cut -d'-' -f2` -m happy_model.json;done
 
 
 #checking which subjects completed preproc and fitlins
