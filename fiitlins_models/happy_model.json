@@ -1,0 +1,101 @@
+{
+  "name": "happy",
+  "description": "happy",
+  "input": {
+    "task": "emoperception"
+  },
+  "blocks": [
+    {
+      "level": "run",
+      "transformations": [
+        {
+          "name": "factor",
+          "input": [
+            "trial_type"
+          ]
+        }
+      ],
+      "model": {
+        "HRF_variables": [
+          [
+            "trial_type.happy_0",
+            "trial_type.happy_25",
+            "trial_type.happy_50",
+            "trial_type.happy_75",
+            "trial_type.happy_100"
+          ],
+        ],
+        "variables": [
+          "trial_type.happy_0",
+          "trial_type.happy_25",
+          "trial_type.happy_50",
+          "trial_type.happy_75",
+          "trial_type.happy_100",
+          "FramewiseDisplacement",
+          "X",
+          "Y",
+          "Z",
+          "RotX",
+          "RotY",
+          "RotZ",
+          "aCompCor00",
+          "aCompCor01",
+          "aCompCor02",
+          "aCompCor03",
+          "aCompCor04",
+          "aCompCor05"
+        ]
+      },
+      "contrasts": [
+        {
+          "name": "happy_task_gt_rest",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [1,1,1,1,1],
+          "type": "T"
+        },
+        {
+          "name": "happy_gt_neutral",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [0,0.25,0.25,0.25,0.25],
+          "type": "T"
+        }
+        {
+          "name":"happy_neutral_gt_rest",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [1,0,0,0,0],
+          "type": "T"
+        }
+        {
+          "name":"happy_25_gt_rest",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [0,1,0,0,0],
+          "type": "T"
+        }
+        {
+          "name":"happy_50_gt_rest",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [0,0,1,0,0],
+          "type": "T"
+        }
+        {
+          "name":"happy_75_gt_rest",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [0,0,0,1,0],
+          "type": "T"
+        }
+        {
+          "name":"happy_100_gt_rest",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [0,0,0,0,1],
+          "type": "T"
+        }
+        {
+          "name":"happy_pmod",
+          "condition_list": ["trial_type.happy_0", "trial_type.happy_25","trial_type.happy_50","trial_type.happy_75","trial_type.happy_100"],
+          "weights": [-1,-0.5,0,0.5,1],
+          "type": "T"
+        }
+      ]
+    },
+  ]
+}

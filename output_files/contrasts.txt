@@ -1,0 +1,35 @@
+
+
+view_anger_view_neutral=[ 0.25 0.25 0.25 0.25	-1 ]
+view_anger100_view_neutral=[1 0 0 0 -1 ]
+view_anger75_view_neutral=[0 0 0 1 -1 ]
+view_anger50_view_neutral=[0 0 1 0 -1 ]
+view_anger25_view_neutral=[0 1 0 0 -1 ]
+main_effect=[1 1 1 1 1 ]
+
+
+view_anger_view_neutral=[ 0.25 0.25 0.25 0.25	-1 ]
+view_anger100_view_neutral=[1 0 0 0 -1 ]
+view_anger75_view_neutral=[0 0 0 1 -1 ]
+view_anger50_view_neutral=[0 0 1 0 -1 ]
+view_anger25_view_neutral=[0 1 0 0 -1 ]
+main_effect=[1 1 1 1 1 ]
+
+
+'anger_task_gt_rest' = [1 1 1 1 1];
+'anger_gt_neutral';[0 0.25 0.25 0.25 0.25];
+'anger_neutral_gt_rest';[1 0 0 0 0];
+'anger_25_gt_rest';[0 1 0 0 0];
+'anger_50_gt_rest';[0 0 1 0 0];
+'anger_75_gt_rest';[0 0 0 1 0];
+'anger_100_gt_rest';[0 0 0 0 1];
+'anger_pmod'; [-1 -0.5 0 0.5 1];
+
+'anger_task_gt_rest' = [1 1 1 1 1];
+'anger_gt_neutral';[0 0.25 0.25 0.25 0.25];
+'anger_neutral_gt_rest';[1 0 0 0 0];
+'anger_25_gt_rest';[0 1 0 0 0];
+'anger_50_gt_rest';[0 0 1 0 0];
+'anger_75_gt_rest';[0 0 0 1 0];
+'anger_100_gt_rest';[0 0 0 0 1];
+'anger_pmod'; [-1 -0.5 0 0.5 1];
