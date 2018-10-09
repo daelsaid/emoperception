@@ -14,8 +14,6 @@ outputpath = os.path.join(behav_path, 'output')
 current_dir = [f for f in os.listdir('.') if os.path.isfile(f)]
 
 # extract timing and generate fsl 3 col txt files
-
-
 def extract_emoperception_conditions(behav_data_path, file, output_txt_path):
     behav_dir = behav_data_path
     output_dir = output_txt_path
@@ -43,7 +41,6 @@ def extract_emoperception_conditions(behav_data_path, file, output_txt_path):
             trials.append([line[0], line[2]])
 
     # extract duration of stimulus in seconds
-
     fix = np.array([x for x in trial_timing if x[2].startswith('FixCross')])
     image = np.array([x for x in trial_timing if x[2].startswith('Face')])
     mask = np.array([x for x in trial_timing if x[2].startswith('Mask')])
@@ -81,7 +78,6 @@ def extract_emoperception_conditions(behav_data_path, file, output_txt_path):
     arr = np.delete(arr, 0, axis=0)
 
     # break apart array by condition/percent emotion
-
     happy_0 = []
     happy_25 = []
     happy_50 = []
@@ -101,7 +97,6 @@ def extract_emoperception_conditions(behav_data_path, file, output_txt_path):
             happy_100.append(emo)
 
     # write array to text file
-
     def write_arr_tofile(array, file_with_ext):
         with open(file_with_ext, "w+") as myfile:
             np.savetxt(file_with_ext, array, delimiter=' ', fmt='%s')
@@ -125,15 +120,14 @@ def extract_emoperception_conditions(behav_data_path, file, output_txt_path):
             actual.append(line[2].split(': ')[1])
 
     response_corr = []
-
     for y in range(len(index_with_cor)):
         print y
     #     print [index_with_cor[x][0],index_with_cor[x][1]==actual[x]]
     #     response_corr.append([index_with_cor[x][0],index_with_cor[x][1]==actual[x]])
 
 
-extract_emoperception_conditions('/Users/lillyel-said/Desktop/stanford/scripts/jupyter_notebooks/emopercept/anger_good/logs',
-                                 '17138_ambiguousfaces_anger_7-15-2017_2017_sep_03_1219.log',)
+extract_emoperception_conditions('',
+                                 '',)
 
 # run on all behav log files
 for f in current_dir:
@@ -143,5 +137,5 @@ for f in current_dir:
         print logfile
         try:
             extract_emoperception_conditions(behav_path, logfile, outputpath)
-        except:
+         except:
             pass

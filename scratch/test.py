@@ -8,7 +8,7 @@ import matplotlib as plt
 
 #sset paths
 
-behav_path=('/Volumes/wd_daelsaid/emo_perception/Behav_Archive/Behav_EmoPerception_090417/emo')
+behav_path=('../../Behav_EmoPerception_090417/emo')
 outputpath=os.path.join(behav_path,'out')
 os.chdir(behav_path)
 curr_dir = os.getcwd()
@@ -88,8 +88,6 @@ def extract_emoperception_conditions(behav_path,file_for_timing,outputpath):
     file_name=file_for_timing.split('/')[-1]
 
     #define paths
-    # logs=glob(os.path.join(behav_dir,'*log'))
-
     #read subject log lines
     subj_log_lines=np.genfromtxt(file_name,delimiter="\t",dtype=str)
 
@@ -143,31 +141,6 @@ def extract_emoperception_conditions(behav_path,file_for_timing,outputpath):
 
     name='sub-'+file_name.split('_')[0]+'_task-emo'+file_name.split('_')[2]+'-events_bold'
     write_arr_tofile(arr,os.path.join(behav_dir,output_dir,name+'.txt'))
-
-# print np.delete(arr,1,axis=1)
-# arr=np.delete(arr,0,axis=0)
-# arr=np.delete(arr,2,axis=1)
-    #break apart array by condition/percent emotion
-    # happy_0=[]
-    # happy_25=[]
-    # happy_50=[]
-    # happy_75=[]
-    # happy_100=[]
-    #
-    # for index,emo in enumerate(arr):
-    #     if '_0' in emo[:][2:][0]:
-    #         happy_0.append(emo)
-    #     if '_25' in emo[:][2:][0]:
-    #         happy_25.append(emo)
-    #     if '_50' in emo[:][2:][0]:
-    #         happy_50.append(emo)
-    #     if '_75' in emo[:][2:][0]:
-    #         happy_75.append(emo)
-    #     if '_100' in emo[:][2:][0]:
-    #         happy_100.append(emo)
-
-
-
 
 #run on all behav log files
 for f in current_dir:

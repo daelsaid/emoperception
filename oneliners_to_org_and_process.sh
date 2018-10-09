@@ -6,10 +6,7 @@ main_path=/home/daelsaid/Desktop/data/emo
 testrun=/media/daelsaid/drive_a_backup/data/test_dir_sub_01
 initial_raw_dir=/Volumes/daelsaid/data/emoperception_processing/
 
-
 #ORG
-
-
 #finding all raw emo data niftis  anad copy to dir for backup before renaming
 for x in `find ./ -maxdepth 4 -name '*nii.gz' -type f | grep -v T1 | grep Emo`; do cp $x ${initial_raw_dir}/test1; done
 
@@ -28,11 +25,9 @@ for x in `find . -name '*15*json' -type f`; do echo $(basename $x) `cat $x | gre
 #subject log files with number of lines count, count of if thanks text is present
 for x in `ls *.log`; do echo "subject" `echo $x | cut -d_ -f1` `echo $x | cut -d_ -f2` `cat $x | wc -l` `cat $x | grep ThanksText | wc -l` `cat $x | tail -n 2`;done | grep mouseVisible
 
-
 #renaming behavior and json files
-
 #converting behav text files to bids - accepted events tsv files
- for x in `ls -d *`; do cd $x; prefix=`echo *Happy*.txt | cut -d. -f1`; echo $prefix; tr " " "\\t" < ${prefix}.txt > ${prefix}.tsv; cd /Volumes/wd_daelsaid/emo/all_subj/all_subj;done
+for x in `ls -d *`; do cd $x; prefix=`echo *Happy*.txt | cut -d. -f1`; echo $prefix; tr " " "\\t" < ${prefix}.txt > ${prefix}.tsv; cd /Volumes/wd_daelsaid/emo/all_subj/all_subj;done
 
 #for anger
 for x in `ls -d sub*`; do cd $x/func; run_anger=`ls *anger*nii.gz | cut -d_ -f3-4 | cut -d. -f1`; rename "s/-events_bold/${run_anger}/g" *-events_bold.tsv; cd ${main_path}; done
@@ -52,13 +47,11 @@ sudo docker run --rm -it -v=${main_path}:/data -v=/usr/local/freesurfer:/opt/fre
 for x in `cat test.txt`; do docker run --rm -it -v=${main_path}:/data -v=/usr/local/freesurfer:/opt/freesurfer -v=${main_path}/out_rerun_with_fs:/out poldracklab/fmriprep /data /out participant --participant_label $x --fs-license-file=/opt/freesurfer; done
 
 #FITLINS
-
 #running fitlins on preprocessed subject files for happy and angry
 
 for subj in `ls -d sub*`; do docker run --rm -it -v=${testrun}:/data -v=${testrun}/derivatives:/preproc -v=${testrun}/results/anger:/outdir poldracklab/fitlins /data /outdir session --participant-label `echo $subj | cut -d'-' -f2` -m anger_model.json;done
 
 for subj in `ls -d sub*`; do docker run --rm -it -v=${testrun}:/data -v=${testrun}/derivatives:/preproc -v=${testrun}/results/happy:/outdir poldracklab/fitlins /data /outdir session --participant-label `echo $subj | cut -d'-' -f2` -m happy_model.json;done
-
 
 #checking which subjects completed preproc and fitlins
 for x in `ls -d sub*`; do echo $x `ls -d $deriv*/fmriprep/$x | cut -d/ -f3` `ls deriv*/fmriprep/$x*html | cut -d/ -f3` `ls -d results/anger/fitlins/$x | cut -d/ -f2,4 | cut -d/ -f1,2` `ls -d results/happy/fitlins/$x | cut -d/ -f2,4 | cut -d/ -f1,2`;done | sort
